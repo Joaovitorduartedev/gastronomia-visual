@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  BarChart3, 
   Package, 
   Users, 
   DollarSign, 
@@ -10,10 +9,12 @@ import {
   CheckCircle2,
   ArrowLeft,
   TrendingUp,
-  Filter
+  Filter,
+  LogOut
 } from "lucide-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth, useRequireAuth } from "@/hooks/useAuth";
 
 // Mock data
 const mockOrders = [
@@ -69,6 +70,22 @@ const consultants = [
 export default function Admin() {
   const [selectedConsultant, setSelectedConsultant] = useState("all");
   const [selectedTab, setSelectedTab] = useState("production");
+  const { isLoading } = useRequireAuth("/login");
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-muted/30 flex items-center justify-center">
+        <div className="text-muted-foreground">Carregando...</div>
+      </div>
+    );
+  }
 
   const filteredOrders = mockOrders.filter((order) => {
     const matchesConsultant = selectedConsultant === "all" || 
@@ -102,6 +119,15 @@ export default function Admin() {
                 <span className="font-bold">PixelPro Admin</span>
               </div>
             </div>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleLogout}
+              className="text-primary-foreground/70 hover:text-primary-foreground hover:bg-primary-foreground/10"
+            >
+              <LogOut size={18} className="mr-2" />
+              Sair
+            </Button>
           </div>
         </div>
       </header>
