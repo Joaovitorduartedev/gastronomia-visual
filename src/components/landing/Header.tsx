@@ -31,9 +31,6 @@ export function Header() {
           </div>
 
           <div className="hidden md:flex items-center gap-4">
-            <Link to="/admin">
-              <Button variant="ghost">Admin</Button>
-            </Link>
             <Link to="/briefing">
               <Button variant="accent">Começar Agora</Button>
             </Link>
@@ -61,9 +58,6 @@ export function Header() {
               Como Funciona
             </a>
             <div className="flex flex-col gap-2 pt-4">
-              <Link to="/admin">
-                <Button variant="ghost" className="w-full">Admin</Button>
-              </Link>
               <Link to="/briefing">
                 <Button variant="accent" className="w-full">Começar Agora</Button>
               </Link>
