@@ -6,10 +6,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
+import logoImg from "@/assets/logo-prime-visual.png";
 
 // AVISO: Credenciais no frontend NÃO são seguras para produção
 const ADMIN_EMAIL = "gastronomiavisualofc@gmail.com";
-const ADMIN_PASSWORD = "bino1234.";
+const ADMIN_PASSWORD = "Pmja100#";
 
 interface StoredUser {
   email: string;
@@ -172,14 +173,15 @@ export default function Login() {
         <div className="bg-card rounded-2xl border border-border p-8 shadow-lg">
           {/* Logo */}
           <div className="flex justify-center mb-8">
-            <div className="flex items-center gap-2">
-              <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xl">P</span>
-              </div>
-              <span className="text-2xl font-bold text-foreground">PixelPro</span>
+            <div className="flex flex-col items-center gap-2">
+              <img 
+                src={logoImg} 
+                alt="Prime Visual Logo" 
+                className="w-24 h-auto mb-2" // Ajuste o tamanho (w-24) conforme necessário
+              />
+              <span className="text-2xl font-bold text-foreground">Prime Visual</span>
             </div>
           </div>
-
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "login" | "signup")} className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="login">Entrar</TabsTrigger>

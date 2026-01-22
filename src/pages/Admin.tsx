@@ -116,7 +116,7 @@ export default function Admin() {
                 <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
                   <span className="text-accent-foreground font-bold text-sm">P</span>
                 </div>
-                <span className="font-bold">PixelPro Admin</span>
+                <span className="font-bold">Prime Visual Admin</span>
               </div>
             </div>
             <Button 
