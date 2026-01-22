@@ -1,16 +1,24 @@
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
       <div className="container-narrow section-padding !py-4">
         <nav className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/home" className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-lg">P</span>
             </div>
@@ -34,6 +42,12 @@ export function Header() {
             <Link to="/briefing">
               <Button variant="accent">Começar Agora</Button>
             </Link>
+            {isAuthenticated && (
+              <Button variant="outline" size="sm" onClick={handleLogout}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Sair
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -61,6 +75,12 @@ export function Header() {
               <Link to="/briefing">
                 <Button variant="accent" className="w-full">Começar Agora</Button>
               </Link>
+              {isAuthenticated && (
+                <Button variant="outline" className="w-full" onClick={handleLogout}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sair
+                </Button>
+              )}
             </div>
           </div>
         )}

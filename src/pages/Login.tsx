@@ -153,20 +153,15 @@ export default function Login() {
       users.push(newUser);
       localStorage.setItem("pixelpro_users", JSON.stringify(users));
       
-      // Auto login
-      localStorage.setItem("pixelpro_auth", JSON.stringify({ 
-        email: newUser.email,
-        name: newUser.name,
-        role: "user",
-        loginAt: new Date().toISOString()
-      }));
-      
       toast({
         title: "Conta criada!",
-        description: "Bem-vindo ao PixelPro!",
+        description: "Agora faça login para continuar.",
       });
       
-      navigate("/home");
+      // Switch to login tab
+      setActiveTab("login");
+      setLoginEmail(newUser.email);
+      setLoginPassword("");
       setIsLoading(false);
     }, 500);
   };
