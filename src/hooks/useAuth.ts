@@ -37,7 +37,7 @@ export function useAuth() {
   };
 }
 
-export function useRequireAuth(redirectTo: string = "/login") {
+export function useRequireAuth(redirectTo: string = "/") {
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
 
