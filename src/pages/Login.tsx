@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
-import logoImg from "@/assets/logo-prime-visual.png";
+import logoImg from "@/assets/logo-prime-visual2.png";
 
 // AVISO: Credenciais no frontend NÃO são seguras para produção
 const ADMIN_EMAIL = "gastronomiavisualofc@gmail.com";
@@ -33,6 +33,8 @@ export default function Login() {
   const [signupConfirmPassword, setSignupConfirmPassword] = useState("");
   
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Para o olho da senha
+  const [emailValid, setEmailValid] = useState(false); // Para o check verde
   const navigate = useNavigate();
   const { toast } = useToast();
   const { isAuthenticated, isAdmin } = useAuth();
@@ -170,18 +172,18 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-muted/30 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-card rounded-2xl border border-border p-8 shadow-lg">
-          {/* Logo */}
-          <div className="flex justify-center mb-8">
-            <div className="flex flex-col items-center gap-2">
-              <img 
-                src={logoImg} 
-                alt="Prime Visual Logo" 
-                className="w-24 h-auto mb-2" // Ajuste o tamanho (w-24) conforme necessário
-              />
-              <span className="text-2xl font-bold text-foreground">Prime Visual</span>
-            </div>
-          </div>
+        <div className="bg-card/70 backdrop-blur-md rounded-2xl border border-white/20 p-8 shadow-[0_0_25px_rgba(255,255,255,0.1)]">
+         {/* Logo Centralizada */}
+          <div className="flex flex-col items-center mb-8">
+          <img 
+            src={logoImg} 
+            alt="Prime Visual" 
+            className="w-28 h-auto mb-2 drop-shadow-2xl" 
+          />
+        <h2 className="text-sm font-medium text-muted-foreground tracking-widest uppercase">
+          Prime Visual Studio
+      </h2>
+    </div>
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "login" | "signup")} className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="login">Entrar</TabsTrigger>
