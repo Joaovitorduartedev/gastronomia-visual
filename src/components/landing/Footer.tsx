@@ -82,7 +82,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-primary-foreground/10">
           <p className="text-center text-primary-foreground/50 text-sm">
-            © {new Date().getFullYear()} PixelPro. Todos os direitos reservados.
+            © {new Date().getFullYear()} Visual Prime. Todos os direitos reservados.
           </p>
         </div>
       </div>

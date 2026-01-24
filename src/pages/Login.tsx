@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import logoImg from "@/assets/logo-prime-visual2.png";
+import {Eye,EyeOff,} from "lucide-react";
 
 // AVISO: Credenciais no frontend NÃO são seguras para produção
 const ADMIN_EMAIL = "gastronomiavisualofc@gmail.com";
@@ -21,7 +22,10 @@ interface StoredUser {
 
 export default function Login() {
   const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
-  
+
+  const [showSignupPassword, setShowSignupPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
   // Login state
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
@@ -58,116 +62,114 @@ export default function Login() {
     return [];
   };
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+const handleLogin = (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsLoading(true);
 
-    setTimeout(() => {
-      // Check admin credentials
-      if (loginEmail === ADMIN_EMAIL && loginPassword === ADMIN_PASSWORD) {
+  setTimeout(() => {
+    // 1. Verifica primeiro se é o Administrador
+    if (loginEmail === ADMIN_EMAIL && loginPassword === ADMIN_PASSWORD) {
+      localStorage.setItem("pixelpro_auth", JSON.stringify({ 
+        email: loginEmail, 
+        role: "admin",
+        loginAt: new Date().toISOString()
+      }));
+      toast({ title: "Login realizado!", description: "Bem-vindo ao painel administrativo." });
+      navigate("/admin");
+    } else {
+      // 2. Busca os usuários que você cadastrou no localStorage
+      const users = getStoredUsers();
+      // Procura um usuário que combine e-mail E senha exatamente como cadastrados
+      const user = users.find(u => u.email === loginEmail && u.password === loginPassword);
+      
+      if (user) {
+        // Se encontrar, salva a sessão e redireciona para a home
         localStorage.setItem("pixelpro_auth", JSON.stringify({ 
-          email: loginEmail, 
-          role: "admin",
+          email: user.email,
+          name: user.name,
+          role: "user",
           loginAt: new Date().toISOString()
         }));
         
-        toast({
-          title: "Login realizado!",
-          description: "Bem-vindo ao painel administrativo.",
-        });
-        
-        navigate("/admin");
+        toast({ title: "Login realizado!", description: `Bem-vindo de volta, ${user.name}!` });
+        navigate("/home"); // Certifique-se de que esta rota existe no seu App.tsx
       } else {
-        // Check stored users
-        const users = getStoredUsers();
-        const user = users.find(u => u.email === loginEmail && u.password === loginPassword);
-        
-        if (user) {
-          localStorage.setItem("pixelpro_auth", JSON.stringify({ 
-            email: user.email,
-            name: user.name,
-            role: "user",
-            loginAt: new Date().toISOString()
-          }));
-          
-          toast({
-            title: "Login realizado!",
-            description: `Bem-vindo de volta, ${user.name}!`,
-          });
-          
-          navigate("/home");
-        } else {
-          toast({
-            title: "Credenciais inválidas",
-            description: "E-mail ou senha incorretos.",
-            variant: "destructive",
-          });
-        }
-      }
-      setIsLoading(false);
-    }, 500);
-  };
-
-  const handleSignup = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (signupPassword !== signupConfirmPassword) {
-      toast({
-        title: "Senhas não coincidem",
-        description: "Por favor, verifique as senhas digitadas.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (signupPassword.length < 6) {
-      toast({
-        title: "Senha muito curta",
-        description: "A senha deve ter pelo menos 6 caracteres.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsLoading(true);
-
-    setTimeout(() => {
-      const users = getStoredUsers();
-      
-      // Check if email already exists
-      if (users.some(u => u.email === signupEmail)) {
+        // Se não encontrar, exibe o erro que você está vendo
         toast({
-          title: "E-mail já cadastrado",
-          description: "Este e-mail já está em uso. Tente fazer login.",
+          title: "Credenciais inválidas",
+          description: "E-mail ou senha incorretos. Verifique se a conta foi criada.",
           variant: "destructive",
         });
-        setIsLoading(false);
-        return;
       }
+    }
+    setIsLoading(false);
+  }, 500);
+};
 
-      // Add new user
-      const newUser: StoredUser = {
-        email: signupEmail,
-        password: signupPassword,
-        name: signupName,
-        createdAt: new Date().toISOString()
-      };
-      
-      users.push(newUser);
-      localStorage.setItem("pixelpro_users", JSON.stringify(users));
-      
+  const handleSignup = (e: React.FormEvent) => {
+  e.preventDefault();
+  
+  // 1. Mantém a verificação se as senhas são iguais
+  if (signupPassword !== signupConfirmPassword) {
+    toast({
+      title: "Senhas não coincidem",
+      description: "Por favor, verifique as senhas digitadas.",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  // 2. ADICIONA a nova validação de complexidade (8 caracteres, letra e símbolo)
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+  if (!passwordRegex.test(signupPassword)) {
+    toast({
+      title: "Senha muito fraca",
+      description: "A senha deve ter no mínimo 8 caracteres, incluir letras e pelo menos um caractere especial.",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  setIsLoading(true);
+
+  // 3. Mantém a lógica de salvamento dentro do setTimeout
+  setTimeout(() => {
+    const users = getStoredUsers();
+    
+    // Verifica se o e-mail já existe
+    if (users.some(u => u.email === signupEmail)) {
       toast({
-        title: "Conta criada!",
-        description: "Agora faça login para continuar.",
+        title: "E-mail já cadastrado",
+        description: "Este e-mail já está em uso. Tente fazer login.",
+        variant: "destructive",
       });
-      
-      // Switch to login tab
-      setActiveTab("login");
-      setLoginEmail(newUser.email);
-      setLoginPassword("");
       setIsLoading(false);
-    }, 500);
-  };
+      return;
+    }
+
+    // Cria e salva o novo usuário no localStorage
+    const newUser: StoredUser = {
+      email: signupEmail,
+      password: signupPassword, // Agora já validada pelo Regex acima
+      name: signupName,
+      createdAt: new Date().toISOString()
+    };
+    
+    users.push(newUser);
+    localStorage.setItem("pixelpro_users", JSON.stringify(users));
+    
+    toast({
+      title: "Conta criada!",
+      description: "Agora faça login para continuar.",
+    });
+    
+    // Reseta o formulário e muda para a aba de login
+    setActiveTab("login");
+    setLoginEmail(newUser.email);
+    setLoginPassword("");
+    setIsLoading(false);
+  }, 500);
+};
 
   return (
     <div className="min-h-screen bg-muted/30 flex items-center justify-center p-4">
@@ -178,7 +180,7 @@ export default function Login() {
           <img 
             src={logoImg} 
             alt="Prime Visual" 
-            className="w-28 h-auto mb-2 drop-shadow-2xl" 
+            className="w-52 h-auto mb-2 drop-shadow-2xl" 
           />
         <h2 className="text-sm font-medium text-muted-foreground tracking-widest uppercase">
           Prime Visual Studio
@@ -186,8 +188,18 @@ export default function Login() {
     </div>
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "login" | "signup")} className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="login">Entrar</TabsTrigger>
-              <TabsTrigger value="signup">Cadastrar</TabsTrigger>
+              <TabsTrigger 
+                value="login" 
+                className="data-[state=active]:border data-[state=active]:border-white"
+              >
+            Entrar
+            </TabsTrigger>
+              <TabsTrigger 
+                value="signup" 
+                className="data-[state=active]:border data-[state=active]:border-white"
+              >
+              Cadastrar
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="login">
@@ -213,17 +225,26 @@ export default function Login() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="login-password">Senha</Label>
-                  <Input
-                    id="login-password"
-                    type="password"
-                    placeholder="••••••••"
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                    required
-                    className="h-12"
-                  />
-                </div>
+                  <Label htmlFor="login-password">Senha</Label> {/* Alterado ID para login-password */}
+                  <div className="relative">
+                    <Input
+                      id="login-password"
+                      type={showLoginPassword ? "text" : "password"} // Usa o estado de login
+                      placeholder="••••••••"
+                      value={loginPassword} // CORRIGIDO: Agora usa loginPassword
+                      onChange={(e) => setLoginPassword(e.target.value)} // CORRIGIDO: Agora usa setLoginPassword
+                      required
+                      className="h-12 pr-10" 
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowLoginPassword(!showLoginPassword)} // CORRIGIDO: Usa o olho do login
+                      className="absolute right-0 top-0 h-full px-3 flex items-center justify-center text-muted-foreground hover:text-foreground"
+                    >
+                      {showLoginPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
+                </div>  
 
                 <Button 
                   type="submit" 
@@ -272,28 +293,47 @@ export default function Login() {
 
                 <div className="space-y-2">
                   <Label htmlFor="signup-password">Senha</Label>
-                  <Input
-                    id="signup-password"
-                    type="password"
-                    placeholder="••••••••"
-                    value={signupPassword}
-                    onChange={(e) => setSignupPassword(e.target.value)}
-                    required
-                    className="h-12"
-                  />
+                  <div className="relative">
+                    <Input
+                      id="signup-password"
+                      type={showSignupPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      value={signupPassword}
+                      onChange={(e) => setSignupPassword(e.target.value)}
+                      required
+                      className="h-12 pr-10" 
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowSignupPassword(!showSignupPassword)}
+                      /* top-0 e h-full garantem que o botão ocupe toda a altura do input, centralizando o ícone */
+                      className="absolute right-0 top-0 h-full px-3 flex items-center justify-center text-muted-foreground hover:text-foreground"
+                    >
+                      {showSignupPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="signup-confirm-password">Confirmar senha</Label>
-                  <Input
-                    id="signup-confirm-password"
-                    type="password"
-                    placeholder="••••••••"
-                    value={signupConfirmPassword}
-                    onChange={(e) => setSignupConfirmPassword(e.target.value)}
-                    required
-                    className="h-12"
-                  />
+                  <div className="relative">
+                    <Input
+                      id="signup-confirm-password"
+                      type={showConfirmPassword ? "text" : "password"} // Estado independente
+                      placeholder="••••••••"
+                      value={signupConfirmPassword}
+                      onChange={(e) => setSignupConfirmPassword(e.target.value)}
+                      required
+                      className="h-12 pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)} // Função independente
+                      className="absolute right-0 top-0 h-full px-3 flex items-center justify-center text-muted-foreground hover:text-foreground"
+                    >
+                      {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
                 </div>
 
                 <Button 

@@ -92,8 +92,8 @@ export default function Briefing() {
             <Link to="/" className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-sm">P</span>
-              </div>
-              <span className="font-bold text-foreground">PixelPro</span>
+              </div>S
+              <span className="font-bold text-foreground">Visual Prime</span>
             </Link>
           </div>
         </div>
