@@ -7,8 +7,8 @@
 
 @layer base {
   :root {
-    --background: 240 10% 4%;       /* Fundo quase preto */
-    --foreground: 0 0% 98%;
+    --background: 2220 10% 10%;       /* Fundo quase preto */
+    --foreground: 0 0% 100%;
     --card: 240 10% 6%;             /* Card sutilmente mais claro */
     --card-foreground: 0 0% 98%;
     --primary: 24 100% 50%;         /* Laranja Prime Visual */

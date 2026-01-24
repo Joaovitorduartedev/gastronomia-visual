@@ -180,7 +180,7 @@ const handleLogin = (e: React.FormEvent) => {
           <img 
             src={logoImg} 
             alt="Prime Visual" 
-            className="w-52 h-auto mb-2 drop-shadow-2xl" 
+            className="w-70 h-auto mb-2 drop-shadow-2xl" 
           />
         <h2 className="text-sm font-medium text-muted-foreground tracking-widest uppercase">
           Prime Visual Studio

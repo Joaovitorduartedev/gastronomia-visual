@@ -49,7 +49,7 @@ export function Portfolio() {
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
 
   return (
-    <section id="portfolio" className="section-padding bg-background">
+    <section id="portfolio" className="section-padding bg-black">
       <div className="container-narrow">
         <div className="text-center mb-16">
           <span className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent text-sm font-semibold mb-4">
