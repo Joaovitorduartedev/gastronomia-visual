@@ -3,44 +3,19 @@ import { Link } from "react-router-dom";
 
 export function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground">
+    <footer className="bg-black text-primary-foreground">
       <div className="container-narrow section-padding !py-12">
         <div className="grid md:grid-cols-3 gap-12">
           {/* Brand */}
           <div>
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
-                <span className="text-accent-foreground font-bold text-lg">P</span>
-              </div>
-              <span className="text-xl font-bold">PixelPro</span>
+              <span className="text-xl font-bold">Visual Prime</span>
             </Link>
             <p className="text-primary-foreground/70 text-sm">
               Transformando fotos comuns em imagens profissionais que vendem mais.
             </p>
           </div>
-
-          {/* Links */}
-          <div>
-            <h4 className="font-semibold mb-4">Links Rápidos</h4>
-            <ul className="space-y-2">
-              <li>
-                <a href="#portfolio" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors text-sm">
-                  Portfólio
-                </a>
-              </li>
-              <li>
-                <a href="#pricing" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors text-sm">
-                  Planos
-                </a>
-              </li>
-              <li>
-                <a href="#how-it-works" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors text-sm">
-                  Como Funciona
-                </a>
-              </li>
-            </ul>
-          </div>
-
+          
           {/* Contact */}
           <div>
             <h4 className="font-semibold mb-4">Contato</h4>

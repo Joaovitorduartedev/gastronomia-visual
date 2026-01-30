@@ -14,8 +14,8 @@ const consultants = [
 ];
 
 const plans = {
-  standard: { name: "Standard", price: "149", photos: 5 },
-  premium: { name: "Premium", price: "249", photos: 10 },
+  standard: { name: "Padrão", price: "60", photos: 5 },
+  premium: { name: "Premium", price: "120", photos: 10 },
 };
 
 export default function Briefing() {
