@@ -9,7 +9,7 @@ export function Footer() {
           {/* Brand */}
           <div>
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <span className="text-xl font-bold">Visual Prime</span>
+              <span className="text-xl font-bold">Prime Visual</span>
             </Link>
             <p className="text-primary-foreground/70 text-sm">
               Transformando fotos comuns em imagens profissionais que vendem mais.
@@ -48,7 +48,7 @@ export function Footer() {
                   className="flex items-center gap-2 text-primary-foreground/70 hover:text-primary-foreground transition-colors text-sm"
                 >
                   <Instagram size={16} />
-                  @pixelpro
+                  @prime_.visual
                 </a>
               </li>
             </ul>
@@ -57,7 +57,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-primary-foreground/10">
           <p className="text-center text-primary-foreground/50 text-sm">
-            © {new Date().getFullYear()} Visual Prime. Todos os direitos reservados.
+            © {new Date().getFullYear()} Prime Visual. Todos os direitos reservados.
           </p>
         </div>
       </div>
