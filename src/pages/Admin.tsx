@@ -26,7 +26,7 @@ const mockOrders = [
     status: "production",
     consultant: "João Silva",
     date: "2024-01-15",
-    value: 249,
+    value: 120,
   },
   {
     id: "2",
@@ -36,7 +36,7 @@ const mockOrders = [
     status: "production",
     consultant: "Maria Santos",
     date: "2024-01-14",
-    value: 149,
+    value: 60,
   },
   {
     id: "3",
@@ -46,7 +46,7 @@ const mockOrders = [
     status: "resolved",
     consultant: "João Silva",
     date: "2024-01-10",
-    value: 249,
+    value: 120,
   },
   {
     id: "4",
@@ -56,7 +56,7 @@ const mockOrders = [
     status: "resolved",
     consultant: "Pedro Oliveira",
     date: "2024-01-08",
-    value: 149,
+    value: 60,
   },
 ];
 

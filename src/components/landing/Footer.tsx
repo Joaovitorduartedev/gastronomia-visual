@@ -42,7 +42,7 @@ export function Footer() {
               </li>
               <li>
                 <a 
-                  href="https://instagram.com/pixelpro" 
+                  href="https://www.instagram.com/prime_.visual?igsh=MTBiN3R3ZHBhNzMzcg==" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-primary-foreground/70 hover:text-primary-foreground transition-colors text-sm"
